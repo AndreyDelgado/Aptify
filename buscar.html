@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Buscá apartamentos en alquiler en Costa Rica usando filtros por provincia, precio, tipo y estilo de vida.">
+    <meta name="keywords" content="buscar apartamentos, alquiler Costa Rica, filtros, vivienda, Aptify">
+    <meta name="author" content="Aptify">
+    <!-- CSS externo principal del sitio -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/paginas.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Tipografías externas desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <title>Aptify | Buscar propiedades</title>
+</head>
+
+<body>
+
+    <!-- Encabezado principal fijo del sitio -->
+    <header class="site-header">
+        <div class="container header-content">
+            <p class="logo"><strong>&#9654; Aptify</strong></p>
+            <!-- Checkbox oculto para controlar el menú hamburguesa sin JavaScript -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <!-- Botón visual del menú hamburguesa -->
+            <label for="menu-toggle" class="menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <!-- Navegación principal -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a class="active-link" href="buscar.html">Buscar</a></li>
+                    <li><a href="publicar.html">Publicar propiedad</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Ubicación actual (breadcrumb) -->
+    <nav class="breadcrumb" aria-label="Ubicación actual">
+        <div class="container">
+            <a href="index.html">Inicio</a>
+            <span>Buscar propiedades</span>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+
+        <!-- Encabezado de la sección de búsqueda -->
+        <section class="buscar-hero">
+            <div class="container">
+                <span class="section-badge">Búsqueda con filtros · DOM</span>
+                <h1>Buscá tu próximo hogar</h1>
+                <p>
+                    Usá los filtros para encontrar la propiedad ideal según tu provincia,
+                    presupuesto y estilo de vida. Los resultados se actualizan en tiempo real.
+                </p>
+            </div>
+        </section>
+
+        <!-- Sección principal: filtros + resultados -->
+        <section class="buscar-section">
+            <div class="container buscar-layout">
+
+                <!-- Panel lateral de filtros -->
+                <aside class="filtros-panel">
+                    <div class="filtros-header">
+                        <h2>Filtros</h2>
+                        <button id="btnLimpiarFiltros" class="btn-clear">
+                            &#10005; Limpiar
+                        </button>
+                    </div>
+
+                    <!-- Filtro: Provincia -->
+                    <div class="filtro-grupo">
+                        <label for="filtroProvincia">Provincia</label>
+                        <select id="filtroProvincia">
+                            <option value="">Todas las provincias</option>
+                            <option value="San José">San José</option>
+                            <option value="Alajuela">Alajuela</option>
+                            <option value="Heredia">Heredia</option>
+                            <option value="Cartago">Cartago</option>
+                            <option value="Guanacaste">Guanacaste</option>
+                            <option value="Puntarenas">Puntarenas</option>
+                            <option value="Limón">Limón</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro: Tipo de propiedad -->
+                    <div class="filtro-grupo">
+                        <label for="filtroTipo">Tipo de propiedad</label>
+                        <select id="filtroTipo">
+                            <option value="">Todos los tipos</option>
+                            <option value="Apartamento">Apartamento</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Estudio">Estudio</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro: Precio máximo -->
+                    <div class="filtro-grupo">
+                        <label for="filtroPrecio">Precio máximo (₡)</label>
+                        <select id="filtroPrecio">
+                            <option value="">Sin límite</option>
+                            <option value="200000">₡200,000</option>
+                            <option value="350000">₡350,000</option>
+                            <option value="500000">₡500,000</option>
+                            <option value="700000">₡700,000</option>
+                            <option value="1000000">₡1,000,000</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro: Habitaciones mínimas -->
+                    <div class="filtro-grupo">
+                        <label for="filtroHabitacion">Habitaciones (mínimo)</label>
+                        <select id="filtroHabitacion">
+                            <option value="">Cualquier cantidad</option>
+                            <option value="1">1 habitación</option>
+                            <option value="2">2 habitaciones</option>
+                            <option value="3">3 habitaciones</option>
+                            <option value="4">4 habitaciones</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro: Estilo de vida / etiqueta -->
+                    <div class="filtro-grupo">
+                        <label for="filtroEtiqueta">Estilo de vida</label>
+                        <select id="filtroEtiqueta">
+                            <option value="">Todas las opciones</option>
+                            <option value="Mascotas">&#128062; Acepta mascotas</option>
+                            <option value="Cochera">&#128663; Con cochera</option>
+                            <option value="Familias">&#128106; Ideal para familias</option>
+                            <option value="Estudiantes">&#127891; Para estudiantes</option>
+                            <option value="Parejas">&#128145; Para parejas</option>
+                        </select>
+                    </div>
+
+                    <!-- Referencia a apartados del index -->
+                    <div class="filtros-info">
+                        <small>
+                            ¿No encontrás lo que buscás?
+                            <a href="publicar.html">Publicá una solicitud</a> o revisá las
+                            <a href="index.html#locations-section">zonas populares</a>.
+                        </small>
+                    </div>
+                </aside>
+
+                <!-- Área de resultados -->
+                <div class="resultados-area">
+
+                    <!-- Barra de estado con el conteo de resultados -->
+                    <div class="resultados-barra">
+                        <p id="mensajePropiedades" class="resultados-mensaje">
+                            Cargando propiedades disponibles...
+                        </p>
+                        <!-- Estados de disponibilidad para referencia visual -->
+                        <div class="estados-ref">
+                            <span class="estado-disponible">&#9679; Disponible</span>
+                            <span class="estado-inactivo">&#9679; No disponible</span>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor donde se renderizan las tarjetas dinámicamente -->
+                    <div id="contenedorPropiedades" class="listings-grid"></div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Aside informativo: datos rápidos -->
+        <aside id="datos-rapidos">
+            <h4>Dato rápido</h4>
+            <p>
+                La propiedad más económica actualmente disponible es un estudio en
+                <strong>Pérez Zeledón</strong> desde <span>₡130,000 / mes</span>.
+            </p>
+            <small>
+                Esta información forma parte de un ejemplo académico y será dinámica próximamente.
+            </small>
+        </aside>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer id="contacto">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <p class="footer-logo"><strong>&#9654; Aptify</strong></p>
+                <p class="footer-tagline">Alquileres inteligentes en Costa Rica.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Plataforma</h5>
+                <ul>
+                    <li><a href="buscar.html">Buscar apartamentos</a></li>
+                    <li><a href="publicar.html">Publicar propiedad</a></li>
+                    <li><a href="#">Crear alerta</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Tipos de propiedad</h5>
+                <ul>
+                    <li><a href="#">Apartamentos</a></li>
+                    <li><a href="#">Casas</a></li>
+                    <li><a href="#">Estudios</a></li>
+                    <li><a href="#">Para estudiantes</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contacto</h5>
+                <address>
+                    Aptify CR<br>
+                    Correo: hola@aptify.cr<br>
+                    Costa Rica
+                </address>
+            </div>
+        </div>
+        <p>
+            <small>&copy; 2026 Aptify. Todos los derechos reservados. | UTN — Programación en Ambiente Web I</small>
+        </p>
+    </footer>
+
+    <!-- Datos de propiedades (debe cargarse primero) -->
+    <script src="js/propiedadesData.js"></script>
+    <!-- Lógica de filtros y renderizado de buscar.html -->
+    <script src="js/buscar.js"></script>
+
+</body>
+</html>
