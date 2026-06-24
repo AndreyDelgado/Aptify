@@ -3,6 +3,22 @@
    de propiedades en la página de Buscar
    ========================= */
 
+/* NUEVO: Recupera las propiedades publicadas por el usuario y las combina con las de propiedadesData.js */
+function combinarPropiedadesConLocalStorage() {
+    const propiedadesLocales = JSON.parse(localStorage.getItem("aptify_propiedades")) || [];
+
+    propiedadesLocales.forEach(function(propLocal) {
+        // Evitamos duplicar la propiedad si el usuario recarga la página varias veces
+        const yaExiste = propiedades.some(function(p) {
+            return p.id === propLocal.id;
+        });
+
+        if (!yaExiste) {
+            propiedades.push(propLocal);
+        }
+    });
+}
+
 /* Íconos de etiqueta para cada característica */
 const iconosEtiqueta = {
     "Mascotas":     "&#128062;",
@@ -126,8 +142,11 @@ function limpiarFiltros() {
 
 /* Inicializa la página cuando el DOM esté listo */
 document.addEventListener("DOMContentLoaded", function() {
+
+    combinarPropiedadesConLocalStorage();
     /* Renderizado inicial con todas las propiedades */
     aplicarFiltros();
+    document.getElementById("filtroProvincia").addEventListener("change",  aplicarFiltros);
 
     /* Asigna el evento de cambio a cada filtro para actualizar en tiempo real */
     document.getElementById("filtroProvincia").addEventListener("change",  aplicarFiltros);

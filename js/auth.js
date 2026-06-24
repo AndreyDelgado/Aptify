@@ -1,100 +1,111 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Formularios y contenedores
+    // 1. Selección de elementos del DOM (Dropdown y formularios)
+    const sessionDropdown = document.getElementById("session-dropdown");
+    const dropLoginContainer = document.getElementById("drop-login-container");
+    const dropRegisterContainer = document.getElementById("drop-register-container");
+    const dropUserContainer = document.getElementById("drop-user-container");
+    
+    // Elementos visuales del estado de sesión en el header
+    const statusDot = document.getElementById("session-status-dot");
+    const statusText = document.getElementById("session-status-text");
+    const userNameDisplay = document.getElementById("user-name-display");
+    const userEmailDisplay = document.getElementById("user-email-display");
+
+    // Botones y enlaces de acción
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
-    const loginContainer = document.getElementById("login-container");
-    const registerContainer = document.getElementById("register-container");
-    
-    // Enlaces de cambio de vista
     const linkToRegister = document.getElementById("link-to-register");
     const linkToLogin = document.getElementById("link-to-login");
-
-    // Elementos del Nav
-    const navLogin = document.getElementById("nav-login");
-    const navUser = document.getElementById("nav-user");
-    const userNameDisplay = document.getElementById("user-name-display");
     const btnLogout = document.getElementById("btn-logout");
 
-    // --- LÓGICA DE INTERFAZ (CAMBIAR ENTRE LOGIN Y REGISTRO) ---
+    // 2. Cerrar el menú desplegable al hacer clic fuera de él
+    document.addEventListener("click", (event) => {
+        if (sessionDropdown && sessionDropdown.hasAttribute("open")) {
+            if (!sessionDropdown.contains(event.target)) {
+                sessionDropdown.removeAttribute("open");
+            }
+        }
+    });
+
+    // 3. Alternar entre las vistas de Iniciar Sesión y Crear Cuenta
     if (linkToRegister) {
         linkToRegister.addEventListener("click", (e) => {
             e.preventDefault();
-            loginContainer.style.display = "none";
-            registerContainer.style.display = "block";
-            document.querySelector('.breadcrumb span').textContent = "Crear cuenta";
+            if (dropLoginContainer) dropLoginContainer.style.display = "none";
+            if (dropRegisterContainer) dropRegisterContainer.style.display = "block";
         });
     }
 
     if (linkToLogin) {
         linkToLogin.addEventListener("click", (e) => {
             e.preventDefault();
-            registerContainer.style.display = "none";
-            loginContainer.style.display = "block";
-            document.querySelector('.breadcrumb span').textContent = "Iniciar sesión";
+            if (dropRegisterContainer) dropRegisterContainer.style.display = "none";
+            if (dropLoginContainer) dropLoginContainer.style.display = "block";
         });
     }
 
-    // --- LÓGICA DE SESIÓN (NAVEGACIÓN) ---
+    // 4. Función principal para verificar si hay una sesión activa
     function checkSession() {
         const activeUser = JSON.parse(localStorage.getItem("aptify_session"));
         
         if (activeUser) {
-            // Usuario logueado
-            if(navLogin) navLogin.style.display = "none";
-            if(navUser) {
-                navUser.style.display = "flex";
-                navUser.style.alignItems = "center";
-            }
-            if(userNameDisplay) userNameDisplay.textContent = activeUser.nombre;
+            // Si hay usuario: mostrar estado online y tarjeta de perfil
+            if (statusDot) statusDot.className = "user-online";
+            if (statusText) statusText.textContent = activeUser.nombre.split(" ")[0]; // Solo muestra el primer nombre
+            
+            if (dropLoginContainer) dropLoginContainer.style.display = "none";
+            if (dropRegisterContainer) dropRegisterContainer.style.display = "none";
+            if (dropUserContainer) dropUserContainer.style.display = "block";
+            
+            if (userNameDisplay) userNameDisplay.textContent = activeUser.nombre;
+            if (userEmailDisplay) userEmailDisplay.textContent = activeUser.correo;
         } else {
-            // Nadie logueado
-            if(navLogin) navLogin.style.display = "block";
-            if(navUser) navUser.style.display = "none";
+            // Si NO hay usuario: mostrar estado offline y formulario de login
+            if (statusDot) statusDot.className = "user-offline";
+            if (statusText) statusText.textContent = "Ingresar";
+            
+            if (dropLoginContainer) dropLoginContainer.style.display = "block";
+            if (dropRegisterContainer) dropRegisterContainer.style.display = "none";
+            if (dropUserContainer) dropUserContainer.style.display = "none";
         }
     }
 
-    // --- OBTENER USUARIOS DE LA "BASE DE DATOS" ---
+    // 5. Obtener la lista de usuarios registrados en localStorage
     function getUsers() {
         const users = localStorage.getItem("aptify_users");
         return users ? JSON.parse(users) : [];
     }
 
-    // --- EVENTO: CREAR CUENTA ---
+    // 6. Lógica de Registro de nuevo usuario
     if (registerForm) {
         registerForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            
+            e.preventDefault(); // Evita que la página se recargue
+
             const name = document.getElementById("reg-name").value.trim();
             const email = document.getElementById("reg-email").value.trim();
             const pass = document.getElementById("reg-pass").value;
 
             const users = getUsers();
-
+            
             // Validar si el correo ya existe
-            const userExists = users.find(u => u.correo === email);
-            if (userExists) {
-                alert("Este correo electrónico ya está registrado. Intenta iniciar sesión.");
+            if (users.find(u => u.correo === email)) {
+                alert("Este correo ya está registrado.");
                 return;
             }
 
-            // Guardar nuevo usuario
+            // Guardar nuevo usuario e iniciar sesión automáticamente
             const newUser = { nombre: name, correo: email, contrasena: pass };
             users.push(newUser);
             localStorage.setItem("aptify_users", JSON.stringify(users));
-
-            // Iniciar sesión automáticamente
             localStorage.setItem("aptify_session", JSON.stringify(newUser));
             
             checkSession();
             registerForm.reset();
-            alert(`¡Cuenta creada con éxito! Bienvenido a Aptify, ${name}.`);
-            
-            // Opcional: Redirigir al inicio después de registrarse
-            window.location.href = "index.html"; 
+            if (sessionDropdown) sessionDropdown.removeAttribute("open"); // Cierra el menú al finalizar
         });
     }
 
-    // --- EVENTO: INICIAR SESIÓN ---
+    // 7. Lógica de Inicio de Sesión
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -103,47 +114,42 @@ document.addEventListener("DOMContentLoaded", () => {
             const pass = document.getElementById("login-pass").value;
 
             const users = getUsers();
-
-            // Buscar si el correo existe
             const foundUser = users.find(u => u.correo === email);
 
+            // Validaciones de credenciales
             if (!foundUser) {
                 alert("No encontramos ninguna cuenta con este correo.");
                 return;
             }
-
-            // Validar si la contraseña coincide
             if (foundUser.contrasena !== pass) {
-                alert("La contraseña es incorrecta. Inténtalo de nuevo.");
+                alert("La contraseña es incorrecta.");
                 return;
             }
 
-            // Si todo está bien, iniciamos sesión
+            // Iniciar sesión y actualizar interfaz
             localStorage.setItem("aptify_session", JSON.stringify(foundUser));
-            
             checkSession();
             loginForm.reset();
-            alert(`¡Qué bueno verte de nuevo, ${foundUser.nombre}!`);
-            
-            // Redirigir al inicio después de entrar
-            window.location.href = "index.html";
+            if (sessionDropdown) sessionDropdown.removeAttribute("open");
         });
     }
 
-    // --- EVENTO: CERRAR SESIÓN ---
+    // 8. Lógica de Cerrar Sesión
     if (btnLogout) {
         btnLogout.addEventListener("click", (e) => {
             e.preventDefault();
-            localStorage.removeItem("aptify_session"); // Borramos solo la sesión actual
-            checkSession(); 
-            alert("Has cerrado sesión correctamente.");
-            // Si estamos en la página de publicar, lo sacamos al inicio por seguridad
-            if(window.location.pathname.includes("publicar.html")){
+            localStorage.removeItem("aptify_session"); // Elimina la sesión actual
+            checkSession();
+            if (sessionDropdown) sessionDropdown.removeAttribute("open");
+            
+            // Redirigir al inicio si el usuario está en otra página (ej. buscar o publicar)
+            const urlActual = window.location.pathname.toLowerCase();
+            if (!urlActual.includes("index.html") && !urlActual.endsWith("/")) {
                 window.location.href = "index.html";
             }
         });
     }
 
-    // Ejecutar la revisión de la barra de navegación en cuanto carga la página
+    // 9. Ejecutar revisión inicial al cargar la página
     checkSession();
 });

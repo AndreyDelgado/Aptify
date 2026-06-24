@@ -221,3 +221,176 @@ footer small {
     font-size: 0.78rem;
     color: var(--color-texto-tenue);
 }
+
+/* =========================
+   USUARIO EN HEADER (DROPDOWN)
+   ========================= */
+
+.header-session-area {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.session-dropdown {
+    position: relative;
+}
+
+/* Oculta la flecha por defecto de la etiqueta details */
+.session-dropdown summary {
+    list-style: none;
+}
+.session-dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Botón visible en el nav */
+.header-user {
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-pill);
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.header-user:hover {
+    border-color: var(--color-dorado);
+    color: var(--color-dorado);
+}
+
+/* Puntos de estado */
+.user-online,
+.user-offline {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 999px;
+    flex-shrink: 0;
+}
+
+.user-online {
+    background-color: #3bba6c;
+    box-shadow: 0 0 0 4px rgba(59, 186, 108, 0.15);
+}
+
+.user-offline {
+    background-color: var(--color-texto-tenue);
+}
+
+/* =========================
+   CONTENIDO DEL DROPDOWN
+   ========================= */
+
+.session-dropdown-content {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    width: 320px;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-md);
+    padding: 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    z-index: 1200;
+}
+
+/* Flecha decorativa del cuadro */
+.session-dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 34px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-superficie);
+    border-left: 1px solid var(--color-borde);
+    border-top: 1px solid var(--color-borde);
+    transform: rotate(45deg);
+}
+
+.session-dropdown-content h3 {
+    color: var(--color-dorado);
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+
+.session-dropdown-content p {
+    color: var(--color-texto-suave);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+/* Formularios internos */
+.session-form .form-group {
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.session-form label {
+    display: block;
+    color: var(--color-texto);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.session-form input {
+    width: 100%;
+    background-color: var(--color-superficie-2);
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto);
+    border-radius: var(--radio-sm);
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: var(--fuente-cuerpo);
+}
+
+.session-form input:focus {
+    border-color: var(--color-dorado);
+}
+
+/* Tarjeta de usuario actual */
+.user-card {
+    margin-top: 16px;
+    background-color: var(--color-superficie-2);
+    border: 1px solid var(--color-borde);
+    border-left: 4px solid var(--color-dorado);
+    border-radius: var(--radio-sm);
+    padding: 14px;
+}
+
+.user-card h4 {
+    color: var(--color-texto);
+    margin-bottom: 2px;
+    font-size: 1rem;
+}
+
+.user-card p {
+    color: var(--color-texto-suave);
+    margin-bottom: 0;
+    font-size: 0.85rem;
+}
+
+/* Responsivo para el dropdown en móviles */
+@media (max-width: 700px) {
+    .session-dropdown-content {
+        position: static;
+        width: 100%;
+        margin-top: 12px;
+        box-shadow: none;
+    }
+    .session-dropdown-content::before {
+        display: none;
+    }
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Propiedad | Aptify</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/paginas.css"> </head>
+<body>
+        <!-- Encabezado principal fijo del sitio -->
+    <header class="site-header">
+        <div class="container header-content">
+            <p class="logo"><strong>&#9654; Aptify</strong></p>
+            <!-- Checkbox oculto para controlar el menú hamburguesa sin JavaScript -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <!-- Botón visual del menú hamburguesa -->
+            <label for="menu-toggle" class="menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <!-- Navegación principal -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="buscar.html">Buscar</a></li>
+                    <li><a href="publicar.html">Publicar propiedad</a></li>
+                    
+                    <li class="header-session-area">
+                        <details class="session-dropdown" id="session-dropdown">
+                            <summary class="header-user">
+                                <span id="session-status-dot" class="user-offline"></span>
+                                <span id="session-status-text">Ingresar</span>
+                            </summary>
+                            
+                            <div class="session-dropdown-content">
+                                
+                                <div id="drop-login-container">
+                                    <h3>Iniciar Sesión</h3>
+                                    <p>Accede para guardar favoritos</p>
+                                    <form id="login-form" class="session-form">
+                                        <div class="form-group">
+                                            <label for="login-email">Correo</label>
+                                            <input type="email" id="login-email" required placeholder="correo@ejemplo.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="login-pass">Contraseña</label>
+                                            <input type="password" id="login-pass" required placeholder="********">
+                                        </div>
+                                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 8px;">Ingresar</button>
+                                    </form>
+                                    <p class="auth-switch" style="margin-top: 14px; font-size: 0.85rem; text-align: center;">
+                                        ¿Nuevo? <a href="#" id="link-to-register" style="color: var(--color-dorado); font-weight: bold;">Crear cuenta</a>
+                                    </p>
+                                </div>
+
+                                <div id="drop-register-container" style="display: none;">
+                                    <h3>Crear Cuenta</h3>
+                                    <p>Únete a Aptify</p>
+                                    <form id="register-form" class="session-form">
+                                        <div class="form-group">
+                                            <label for="reg-name">Nombre</label>
+                                            <input type="text" id="reg-name" required placeholder="Ej. Nathalie Paniagua">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reg-email">Correo</label>
+                                            <input type="email" id="reg-email" required placeholder="correo@ejemplo.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reg-pass">Contraseña</label>
+                                            <input type="password" id="reg-pass" required placeholder="Mínimo 8">
+                                        </div>
+                                        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 8px;">Registrarse</button>
+                                    </form>
+                                    <p class="auth-switch" style="margin-top: 14px; font-size: 0.85rem; text-align: center;">
+                                        ¿Ya tienes cuenta? <a href="#" id="link-to-login" style="color: var(--color-dorado); font-weight: bold;">Iniciar sesión</a>
+                                    </p>
+                                </div>
+
+                                <div id="drop-user-container" style="display: none;">
+                                    <h3>Mi Perfil</h3>
+                                    <div class="user-card">
+                                        <h4 id="user-name-display">Usuario</h4>
+                                        <p id="user-email-display">correo@ejemplo.com</p>
+                                    </div>
+                                    <div class="session-buttons">
+                                        <button id="btn-logout" class="btn-secondary" style="width: 100%; margin-top: 16px;">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </details>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Ubicación actual (breadcrumb) -->
+    <nav class="breadcrumb" aria-label="Ubicación actual">
+        <div class="container">
+            <a href="index.html">Inicio</a>
+            <span>Publicar propiedades</span>
+        </div>
+    </nav>
+
+    <main class="publish-section">
+        <div class="container publish-wrapper">
+            
+            <div class="publish-header">
+                <h2>Publicar un Apartamento</h2>
+                <p>Completa los detalles de tu propiedad para que miles de inquilinos puedan encontrarla.</p>
+            </div>
+
+            <div id="auth-warning" class="auth-warning" style="display: none;">
+                <p>Debes <b>iniciar sesión</b> o <b>crear una cuenta</b> para poder publicar propiedades en Aptify.</p>
+            </div>
+
+            <form id="publish-form" class="publish-form" style="display: none;">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="prop-title">Título del anuncio</label>
+                        <input type="text" id="prop-title" required placeholder="Ej. Apartamento moderno en el centro">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-price">Precio mensual (CRC)</label>
+                        <input type="number" id="prop-price" required placeholder="Ej. 250000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-tipo">Tipo de propiedad</label>
+                        <select id="prop-tipo" required>
+                            <option value="" disabled selected>Selecciona un tipo...</option>
+                            <option value="Apartamento">Apartamento</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Estudio">Estudio</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-provincia">Provincia</label>
+                        <select id="prop-provincia" required>
+                            <option value="" disabled selected>Selecciona una...</option>
+                            <option value="San José">San José</option>
+                            <option value="Alajuela">Alajuela</option>
+                            <option value="Heredia">Heredia</option>
+                            <option value="Cartago">Cartago</option>
+                            <option value="Guanacaste">Guanacaste</option>
+                            <option value="Puntarenas">Puntarenas</option>
+                            <option value="Limón">Limón</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-canton">Cantón</label>
+                        <input type="text" id="prop-canton" required placeholder="Ej. Central, Escazú...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-rooms">Habitaciones</label>
+                        <input type="number" id="prop-rooms" min="1" max="10" required placeholder="Ej. 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-baths">Baños</label>
+                        <input type="number" id="prop-baths" min="1" max="5" step="0.5" required placeholder="Ej. 1.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prop-metros">Metros cuadrados (m²)</label>
+                        <input type="number" id="prop-metros" min="10" required placeholder="Ej. 65">
+                    </div>
+
+                    <div class="form-group checkboxes full-width" style="background-color: var(--color-superficie-2); padding: 16px; border-radius: var(--radio-sm); border: 1px solid var(--color-borde);">
+                        <label style="margin-bottom: 8px; display: block; font-weight: bold; color: var(--color-dorado);">Estilo de Vida</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+                            <label><input type="checkbox" id="tag-mascotas" value="Mascotas"> Acepta mascotas</label>
+                            <label><input type="checkbox" id="tag-cochera" value="Cochera"> Con cochera</label>
+                            <label><input type="checkbox" id="tag-familias" value="Familias"> Ideal para familias</label>
+                            <label><input type="checkbox" id="tag-estudiantes" value="Estudiantes"> Para estudiantes</label>
+                            <label><input type="checkbox" id="tag-parejas" value="Parejas"> Para parejas</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="prop-image">URL de la imagen (Portada)</label>
+                        <input type="url" id="prop-image" required placeholder="https://ejemplo.com/foto-apartamento.jpg">
+                        <small class="form-hint">📐 <b>Recomendación:</b> Utiliza imágenes horizontales con un tamaño aproximado de <b>800x600 píxeles</b> (formato 4:3) para que se ajusten perfectamente a las tarjetas de búsqueda sin recortarse.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="prop-desc">Descripción detallada</label>
+                        <textarea id="prop-desc" rows="4" required placeholder="Describe las amenidades, cercanías, etc..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-gold btn-large">Publicar Propiedad</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/publicar.js"></script>
+</body>
+</html>

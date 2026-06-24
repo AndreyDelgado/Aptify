@@ -36,8 +36,74 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
-                    <li><a class="active-link" href="buscar.html">Buscar</a></li>
+                    <li><a href="buscar.html">Buscar</a></li>
                     <li><a href="publicar.html">Publicar propiedad</a></li>
+                    
+                    <li class="header-session-area">
+                        <details class="session-dropdown" id="session-dropdown">
+                            <summary class="header-user">
+                                <span id="session-status-dot" class="user-offline"></span>
+                                <span id="session-status-text">Ingresar</span>
+                            </summary>
+                            
+                            <div class="session-dropdown-content">
+                                
+                                <div id="drop-login-container">
+                                    <h3>Iniciar Sesión</h3>
+                                    <p>Accede para guardar favoritos</p>
+                                    <form id="login-form" class="session-form">
+                                        <div class="form-group">
+                                            <label for="login-email">Correo</label>
+                                            <input type="email" id="login-email" required placeholder="correo@ejemplo.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="login-pass">Contraseña</label>
+                                            <input type="password" id="login-pass" required placeholder="********">
+                                        </div>
+                                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 8px;">Ingresar</button>
+                                    </form>
+                                    <p class="auth-switch" style="margin-top: 14px; font-size: 0.85rem; text-align: center;">
+                                        ¿Nuevo? <a href="#" id="link-to-register" style="color: var(--color-dorado); font-weight: bold;">Crear cuenta</a>
+                                    </p>
+                                </div>
+
+                                <div id="drop-register-container" style="display: none;">
+                                    <h3>Crear Cuenta</h3>
+                                    <p>Únete a Aptify</p>
+                                    <form id="register-form" class="session-form">
+                                        <div class="form-group">
+                                            <label for="reg-name">Nombre</label>
+                                            <input type="text" id="reg-name" required placeholder="Ej. Nathalie Paniagua">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reg-email">Correo</label>
+                                            <input type="email" id="reg-email" required placeholder="correo@ejemplo.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="reg-pass">Contraseña</label>
+                                            <input type="password" id="reg-pass" required placeholder="Mínimo 8">
+                                        </div>
+                                        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 8px;">Registrarse</button>
+                                    </form>
+                                    <p class="auth-switch" style="margin-top: 14px; font-size: 0.85rem; text-align: center;">
+                                        ¿Ya tienes cuenta? <a href="#" id="link-to-login" style="color: var(--color-dorado); font-weight: bold;">Iniciar sesión</a>
+                                    </p>
+                                </div>
+
+                                <div id="drop-user-container" style="display: none;">
+                                    <h3>Mi Perfil</h3>
+                                    <div class="user-card">
+                                        <h4 id="user-name-display">Usuario</h4>
+                                        <p id="user-email-display">correo@ejemplo.com</p>
+                                    </div>
+                                    <div class="session-buttons">
+                                        <button id="btn-logout" class="btn-secondary" style="width: 100%; margin-top: 16px;">Cerrar Sesión</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </details>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -231,6 +297,8 @@
     <script src="js/propiedadesData.js"></script>
     <!-- Lógica de filtros y renderizado de buscar.html -->
     <script src="js/buscar.js"></script>
+
+    <script src="js/auth.js"></script>
 
 </body>
 </html>
