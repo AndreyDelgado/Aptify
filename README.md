@@ -23,6 +23,7 @@ Toda la aplicación opera de forma dinámica en el lado del cliente (Client-Side
 
 ## Estructura de Archivos Actualizada
 
+```text
 ├── index.html          # Página principal y presentación del sistema Aptify.
 ├── buscar.html         # Catálogo interactivo con filtros en tiempo real.
 ├── publicar.html       # Formulario estructurado para el registro de nuevos inmuebles.
@@ -38,7 +39,6 @@ Toda la aplicación opera de forma dinámica en el lado del cliente (Client-Side
     ├── buscar.js       # Motor de filtrado y renderizado dinámico del catálogo.
     ├── publicar.js     # Captura de datos, validación de UX y puente con localStorage.
     └── propiedadesData.js # Arreglo de propiedades base del sistema.
-
 
 ## Flujo de Datos (Persistencia Local)
 
