@@ -1,9 +1,29 @@
 /* =========================
-   Maneja los filtros y el renderizado dinámico
-   de propiedades en la página de Buscar
+    Maneja los filtros y el renderizado dinámico
+    de propiedades en la página de Buscar
    ========================= */
 
-/* NUEVO: Recupera las propiedades publicadas por el usuario y las combina con las de propiedadesData.js */
+// NUEVO: Declaramos el arreglo vacío que se llenará con el Fetch
+let propiedades = [];
+
+/* NUEVO: Carga los datos desde el archivo JSON */
+function cargarPropiedadesBase() {
+    return fetch("data/propiedades.json")
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("No se pudo cargar el archivo JSON");
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            propiedades = data; // Asignamos los datos cargados a nuestra variable global
+        })
+        .catch(function(error) {
+            console.error("Error en Fetch:", error);
+        });
+}
+
+/* Recupera las propiedades publicadas por el usuario y las combina */
 function combinarPropiedadesConLocalStorage() {
     const propiedadesLocales = JSON.parse(localStorage.getItem("aptify_propiedades")) || [];
 
@@ -142,19 +162,17 @@ function limpiarFiltros() {
 
 /* Inicializa la página cuando el DOM esté listo */
 document.addEventListener("DOMContentLoaded", function() {
+    // MODIFICADO: Esperamos a que el Fetch termine antes de renderizar nada
+    cargarPropiedadesBase().then(function() {
+        combinarPropiedadesConLocalStorage();
+        aplicarFiltros();
+    });
 
-    combinarPropiedadesConLocalStorage();
-    /* Renderizado inicial con todas las propiedades */
-    aplicarFiltros();
-    document.getElementById("filtroProvincia").addEventListener("change",  aplicarFiltros);
-
-    /* Asigna el evento de cambio a cada filtro para actualizar en tiempo real */
+    /* Asigna los eventos de cambio (se mantienen igual) */
     document.getElementById("filtroProvincia").addEventListener("change",  aplicarFiltros);
     document.getElementById("filtroTipo").addEventListener("change",       aplicarFiltros);
     document.getElementById("filtroPrecio").addEventListener("change",     aplicarFiltros);
     document.getElementById("filtroEtiqueta").addEventListener("change",   aplicarFiltros);
     document.getElementById("filtroHabitacion").addEventListener("change", aplicarFiltros);
-
-    /* Botón para limpiar todos los filtros */
     document.getElementById("btnLimpiarFiltros").addEventListener("click", limpiarFiltros);
 });

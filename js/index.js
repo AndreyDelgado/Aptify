@@ -1,9 +1,35 @@
 /* =========================
-   Renderiza las tarjetas recientes y controla el Carrusel en la página de inicio
-   a partir del arreglo de propiedades definido en propiedadesData.js.
+    Renderiza las tarjetas recientes y controla el Carrusel en la página de inicio
    ========================= */
 
-/* Íconos de etiqueta para cada característica */
+let propiedades = [];
+
+/* NUEVO: Carga los datos asíncronamente desde el JSON */
+function cargarPropiedadesBase() {
+    return fetch("data/propiedades.json")
+        .then(function(response) {
+            if (!response.ok) throw new Error("Error cargando JSON");
+            return response.json();
+        })
+        .then(function(data) {
+            propiedades = data;
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+}
+
+/* NUEVO: Trae las del LocalStorage por si el usuario quiere ver lo que ha publicado en la principal */
+function combinarPropiedadesConLocalStorage() {
+    const propiedadesLocales = JSON.parse(localStorage.getItem("aptify_propiedades")) || [];
+    propiedadesLocales.forEach(function(propLocal) {
+        const yaExiste = propiedades.some(function(p) {
+            return p.id === propLocal.id;
+        });
+        if (!yaExiste) propiedades.push(propLocal);
+    });
+}
+
 const iconosEtiqueta = {
     "Mascotas":     "&#128062;",
     "Cochera":      "&#128663;",
@@ -85,29 +111,31 @@ function inicializarCarrusel() {
         contenedor.style.transform = "translateX(-" + desplazamiento + "px)";
     }
 
-    btnNext.addEventListener("click", function() {
-        // Detiene el avance si llegamos al límite visible
-        // Ajustable según cuántas tarjetas se deseen desplazar por click.
-        const tarjetasVisibles = Math.floor(contenedor.parentElement.clientWidth / tarjetas[0].clientWidth);
-        if (posicionActual < tarjetas.length - tarjetasVisibles) {
-            posicionActual++;
-            moverCarrusel();
-        } else {
-            posicionActual = 0; // Efecto bucle: vuelve al inicio
-            moverCarrusel();
-        }
-    });
-
-    btnPrev.addEventListener("click", function() {
-        if (posicionActual > 0) {
-            posicionActual--;
-            moverCarrusel();
-        } else {
+    if(btnNext) {
+        btnNext.addEventListener("click", function() {
             const tarjetasVisibles = Math.floor(contenedor.parentElement.clientWidth / tarjetas[0].clientWidth);
-            posicionActual = tarjetas.length - tarjetasVisibles; // Efecto bucle: va al final
-            moverCarrusel();
-        }
-    });
+            if (posicionActual < tarjetas.length - tarjetasVisibles) {
+                posicionActual++;
+                moverCarrusel();
+            } else {
+                posicionActual = 0;
+                moverCarrusel();
+            }
+        });
+    }
+
+    if(btnPrev) {
+        btnPrev.addEventListener("click", function() {
+            if (posicionActual > 0) {
+                posicionActual--;
+                moverCarrusel();
+            } else {
+                const tarjetasVisibles = Math.floor(contenedor.parentElement.clientWidth / tarjetas[0].clientWidth);
+                posicionActual = tarjetas.length - tarjetasVisibles;
+                moverCarrusel();
+            }
+        });
+    }
 
     // Ajusta la posición dinámicamente si el usuario cambia el tamaño de la ventana del navegador
     window.addEventListener("resize", moverCarrusel);
@@ -115,5 +143,9 @@ function inicializarCarrusel() {
 
 /* Ejecuta el renderizado y animación cuando el DOM esté listo */
 document.addEventListener("DOMContentLoaded", function() {
-    inicializarCarrusel();
+    // MODIFICADO: Esperar por los datos del JSON
+    cargarPropiedadesBase().then(function() {
+        combinarPropiedadesConLocalStorage();
+        inicializarCarrusel();
+    });
 });
