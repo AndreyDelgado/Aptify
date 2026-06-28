@@ -1,6 +1,6 @@
 /* =========================
-   Header, navegación, breadcrumb y footer.
-   Elementos estructurales presentes en todas las páginas.
+    Header, navegación, breadcrumb y footer.
+    Elementos estructurales presentes en todas las páginas.
    ========================= */
 
 /* ── HEADER Y NAVEGACIÓN ── */
@@ -34,6 +34,18 @@
     white-space: nowrap;
     font-family: var(--fuente-display);
     color: var(--color-texto);
+    
+    /* Alinea la imagen y el texto horizontalmente en el centro */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio de separación entre la imagen y la palabra Aptify */
+}
+
+/* Controla las dimensiones de la imagen del logo para que no deforme el header */
+.logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* Checkbox oculto para abrir/cerrar menú */

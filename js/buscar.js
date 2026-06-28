@@ -99,6 +99,7 @@ function crearTarjetaBusqueda(propiedad) {
 /* Aplica los filtros seleccionados y re-renderiza los resultados */
 function aplicarFiltros() {
     /* Lee los valores actuales de cada filtro */
+    const filtroNombre     = document.getElementById("filtroNombre").value.toLowerCase().trim();
     const filtroProvincia  = document.getElementById("filtroProvincia").value;
     const filtroTipo       = document.getElementById("filtroTipo").value;
     const filtroPrecio     = document.getElementById("filtroPrecio").value;
@@ -107,6 +108,9 @@ function aplicarFiltros() {
 
     /* Filtra el arreglo de propiedades según los criterios */
     const resultado = propiedades.filter(function(p) {
+        /* Filtro por nombre */
+        if (filtroNombre && !p.nombre.toLowerCase().includes(filtroNombre)) return false;
+
         /* Filtro por provincia */
         if (filtroProvincia && p.provincia !== filtroProvincia) return false;
 
@@ -149,8 +153,36 @@ function renderizarResultados(lista) {
     contenedor.innerHTML = lista.map(crearTarjetaBusqueda).join("");
 }
 
+/* NUEVO: Valida y limpia el texto mientras el usuario escribe */
+function validarEntradaNombre(evento) {
+    const input = evento.target;
+    const mensajeError = document.getElementById("errorNombre");
+    
+    // Permitimos letras (incluyendo tildes y eñes), espacios y guiones medios/bajos. 
+    // Cualquier número o carácter especial como @, $, *, etc., será detectado.
+    const regexPermitido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-_]*$/;
+
+    if (!regexPermitido.test(input.value)) {
+        // Mostramos el mensaje de error visual
+        if (mensajeError) mensajeError.style.display = "block";
+        
+        // Removemos el último carácter inválido introducido
+        input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s-_]/g, "");
+    } else {
+        // Ocultamos el mensaje si todo está correcto
+        if (mensajeError) mensajeError.style.display = "none";
+    }
+
+    // Ejecutamos el filtro inmediatamente letra por letra
+    aplicarFiltros();
+}
+
 /* Limpia todos los filtros y muestra todas las propiedades de nuevo */
 function limpiarFiltros() {
+    document.getElementById("filtroNombre").value = "";
+    const mensajeError = document.getElementById("errorNombre");
+    if (mensajeError) mensajeError.style.display = "none";
+
     document.getElementById("filtroProvincia").value  = "";
     document.getElementById("filtroTipo").value       = "";
     document.getElementById("filtroPrecio").value     = "";
@@ -167,6 +199,12 @@ document.addEventListener("DOMContentLoaded", function() {
         combinarPropiedadesConLocalStorage();
         aplicarFiltros();
     });
+
+    // NUEVO: Escucha el evento 'input' en tiempo real para filtrar y validar al escribir
+    const inputNombre = document.getElementById("filtroNombre");
+    if (inputNombre) {
+        inputNombre.addEventListener("input", validarEntradaNombre);
+    }
 
     /* Asigna los eventos de cambio (se mantienen igual) */
     document.getElementById("filtroProvincia").addEventListener("change",  aplicarFiltros);
