@@ -218,22 +218,32 @@
         text-align: center;
     }
 
-    /* Forzamos a que la ventana del carrusel no genere desbordamientos raros */
+    /* Aseguramos que la ventana oculte perfectamente lo que se desplaza a la derecha */
     .carousel-window {
-        width: 100%;
-        overflow: hidden;
+        width: 100% !important;
+        overflow: hidden !important;
     }
 
-    /* Cada tarjeta en el carrusel ocupará exactamente la totalidad del ancho móvil */
+    /* Cada tarjeta ocupará exactamente el ancho completo de la pantalla */
     .carousel-window .property-card {
-        flex: 0 0 100% !important; /* El !important asegura romper el calc(25%) de escritorio */
-        max-width: 100%;
-        min-width: 0; /* Evita que anchos mínimos previos fuercen a la tarjeta a expandirse */
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        
+        /* En lugar de gap, usamos padding para dar aire entre tarjetas 
+           sin alterar el ancho del 100% que calcula el JS */
+        padding-right: 10px;
+        padding-left: 10px;
+        
+        box-sizing: border-box !important;
     }
 
-    /* Ajustamos el contenedor del carrusel para evitar espacios muertos */
+    /* Ajustamos el contenedor para que no use gap rígido en móvil */
     .carousel-window .listings-grid {
-        gap: 0px; /* Al ser individuales, removemos el gap para que el script calcule exacto */
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0px !important; /* Eliminamos el gap horizontal para que el JS no se desfase */
+        transition: transform 0.5s ease-in-out;
     }
     
     /* Permitir scroll vertical en el menú desplegable cuando esté activo */

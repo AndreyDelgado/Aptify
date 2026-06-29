@@ -104,7 +104,7 @@ function inicializarCarrusel() {
     function moverCarrusel() {
         if (tarjetas.length === 0) return;
         const anchoTarjeta = tarjetas[0].getBoundingClientRect().width;
-        const gap = 20;
+        const gap = window.innerWidth <= 480 ? 0 : 20;
         
         // Desplazamiento basado en el índice actual
         const desplazamiento = posicionActual * (anchoTarjeta + gap);
