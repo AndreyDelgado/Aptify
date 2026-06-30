@@ -87,8 +87,11 @@ function crearTarjetaBusqueda(propiedad) {
                     '<span>' + propiedad.metros + ' m²</span>' +
                 '</div>' +
                 '<div class="property-tags">' + tagsHTML + '</div>' +
-                '<div class="property-footer">' +
-                    '<span class="property-price">' + formatearPrecio(propiedad.precio) + ' <small>/mes</small></span>' +
+                '<div class="property-footer" style="align-items: flex-end;">' +
+                    '<div>' +
+                        '<span style="display:block; font-size: 0.75rem; color: var(--color-texto-suave); margin-bottom: 2px;">Depósito: ' + (propiedad.deposito ? formatearPrecio(propiedad.deposito) : 'Consultar') + '</span>' +
+                        '<span class="property-price">' + formatearPrecio(propiedad.precio) + ' <small>/mes</small></span>' +
+                    '</div>' +
                     '<a href="#" class="btn-card' + (!propiedad.activa ? ' btn-card-disabled' : '') + '">Ver más</a>' +
                 '</div>' +
             '</div>' +
