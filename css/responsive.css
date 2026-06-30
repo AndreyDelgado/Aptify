@@ -201,7 +201,7 @@
    Teléfonos angostos (max-width: 420px)
    ========================= */
 
-@media (max-width: 420px) {
+@media (max-width: 480px) {
 
     .logo {
         font-size: 1.15rem;
@@ -216,5 +216,58 @@
     .btn-gold {
         width: 100%;
         text-align: center;
+    }
+
+    /* Aseguramos que la ventana oculte perfectamente lo que se desplaza a la derecha */
+    .carousel-window {
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    /* Cada tarjeta ocupará exactamente el ancho completo de la pantalla */
+    .carousel-window .property-card {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        
+        /* En lugar de gap, usamos padding para dar aire entre tarjetas 
+           sin alterar el ancho del 100% que calcula el JS */
+        padding-right: 10px;
+        padding-left: 10px;
+        
+        box-sizing: border-box !important;
+    }
+
+    /* Ajustamos el contenedor para que no use gap rígido en móvil */
+    .carousel-window .listings-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0px !important; /* Eliminamos el gap horizontal para que el JS no se desfase */
+        transition: transform 0.5s ease-in-out;
+    }
+    
+    /* Permitir scroll vertical en el menú desplegable cuando esté activo */
+    .main-nav {
+        /* Restamos la altura estimada del header fijo para que encaje perfecto */
+        max-height: calc(100vh - 70px); 
+        overflow-y: auto; /* Activa el scroll si el contenido se desborda */
+        -webkit-overflow-scrolling: touch; /* Suaviza el desplazamiento en celulares */
+    }
+
+    /* Asegurar que el contenedor específico del formulario de sesión no bloquee el flujo */
+    .session-sidebar,
+    .session-form {
+        max-height: none; /* Eliminamos cualquier restricción de altura previa */
+        overflow: visible; /* Dejamos que el contenedor crezca para que .main-nav controle el scroll */
+    }
+
+    /* Reducir ligeramente los espaciados internos en móvil para ganar valioso espacio vertical */
+    .main-nav ul {
+        gap: 8px !important; /* Reduce la separación entre elementos del menú */
+        padding: 15px 0;
+    }
+
+    .session-form .form-group {
+        margin-bottom: 8px !important; /* Reduce el espacio entre campos (input/label) */
     }
 }
